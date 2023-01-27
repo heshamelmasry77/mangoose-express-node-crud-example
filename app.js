@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose'
 import morgan from 'morgan'
+import bodyParser from "body-parser";
 
 // creating my express server
 const app = express();
@@ -9,6 +10,8 @@ const PORT = 7777;
 // using morgan for logs
 app.use(morgan('combined'));
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // create a schema for the devices collection
 const DeviceSchema = new mongoose.Schema({
     device_name: String,
@@ -18,35 +21,23 @@ const DeviceSchema = new mongoose.Schema({
 // create a model based on the schema
 const Device = mongoose.model('Device', DeviceSchema);
 
-// connect to the MongoDB server:
-
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", false);
 
-mongoose.connect('mongodb://0.0.0.0:27017/test-db-noroff', {
+mongoose.connect('mongodb://0.0.0.0:27017/test-db-devices-noroff', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
 const db = mongoose.connection;
-
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.once('open', function() {
     console.log("We're connected to the database <3 <3 !");
 });
 
-
-// my end points
-
-
-// test my backend middleware
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
 // create a new device
 app.post('/createdevice', async (req, res) => {
+    console.log(req.body)
     const device = new Device(req.body);
     try {
         const savedDevice = await device.save();
@@ -61,17 +52,6 @@ app.get('/getalldevices', async (req, res) => {
     try {
         const devices = await Device.find();
         res.send(devices);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-});
-
-// read a specific device
-app.get('/device/:id', async (req, res) => {
-    try {
-        const device = await Device.findById(req.params.id);
-        if (!device) res.status(404).send('Device not found.');
-        res.send(device);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -102,6 +82,3 @@ app.delete('/device/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`> Ready on http://localhost:${PORT}`);
 });
-
-
-
