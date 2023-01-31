@@ -2,7 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose'
 import morgan from 'morgan'
 import bodyParser from "body-parser";
+import dotenv from 'dotenv';
 
+dotenv.config()
 // creating my express server
 const app = express();
 const PORT = 7777;
@@ -25,7 +27,8 @@ const Device = mongoose.model('Device', DeviceSchema);
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", false);
 
-mongoose.connect('mongodb://0.0.0.0:27017/test-db-devices-noroff', {
+console.log(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
