@@ -7,10 +7,6 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "app.js"
-    },
-    {
       "src": "/getalldevices",
       "dest": "app.js"
     }
