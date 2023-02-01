@@ -38,6 +38,14 @@ db.once('open', function() {
     console.log("We're connected to the database <3 <3 !");
 });
 
+app.get('/', (req, res) => {
+    res.send("Hello I am working my friend <3");
+});
+
+app.get('*', (req, res) => {
+    res.send("Hello again I am working my friend <3");
+});
+
 // create a new device
 app.post('/createdevice', async (req, res) => {
     console.log(req.body)
