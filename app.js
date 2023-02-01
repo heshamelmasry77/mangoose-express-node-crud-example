@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 // using morgan for logs
 app.use(morgan('combined'));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 // create a schema for the devices collection
 const DeviceSchema = new mongoose.Schema({
@@ -34,16 +34,8 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', function () {
     console.log("We're connected to the database <3 <3 !");
-});
-
-app.get('/', (req, res) => {
-    res.send("Hello I am working my friend <3");
-});
-
-app.get('*', (req, res) => {
-    res.send("Hello again I am working my friend <3");
 });
 
 // create a new device
@@ -88,6 +80,14 @@ app.delete('/device/:id', async (req, res) => {
     } catch (error) {
         res.status(400).send(error);
     }
+});
+
+app.get('/', (req, res) => {
+    res.send("Hello I am working my friend <3");
+});
+
+app.get('*', (req, res) => {
+    res.send("Hello again I am working my friend <3");
 });
 
 app.listen(PORT, () => {
