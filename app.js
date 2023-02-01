@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config()
 // creating my express server
 const app = express();
-const PORT = 7777;
+const PORT = process.env.PORT;
 
 // using morgan for logs
 app.use(morgan('combined'));
